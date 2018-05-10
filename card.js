@@ -14,9 +14,7 @@ import moment from 'moment'
 const { width, height } = Dimensions.get('window')
 
 class Card extends Component {
-  constructor() {
-    super()
-
+  componentWillMount() {
     this.pan = new Animated.ValueXY({ x: 1, y: 1 })
 
     this.cardPanResponder = PanResponder.create({
@@ -34,7 +32,7 @@ class Card extends Component {
           Animated.decay(this.pan, {
             velocity: { x: 3 * diretion, y: 0 },
             deceleration: 0.995,
-          }).start()
+          }).start(this.props.onSwipeOff)
         } else {
           Animated.spring(this.pan, {
             toValue: { x: 0, y: 0 },
