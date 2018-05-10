@@ -26,11 +26,21 @@ class Card extends Component {
         { dx: this.pan.x, dy: this.pan.y },
       ]),
 
-      onPanResponderRelease: (e, gesture) => {
-        Animated.spring(this.pan, {
-          toValue: { x: 0, y: 0 },
-          friction: 4.5,
-        }).start()
+      onPanResponderRelease: (e, { dx }) => {
+        const absDx = Math.abs(dx)
+        const diretion = absDx / dx
+
+        if (absDx > 120) {
+          Animated.decay(this.pan, {
+            velocity: { x: 3 * diretion, y: 0 },
+            deceleration: 0.995,
+          }).start()
+        } else {
+          Animated.spring(this.pan, {
+            toValue: { x: 0, y: 0 },
+            friction: 4.5,
+          }).start()
+        }
       },
     })
   }
