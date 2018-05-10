@@ -13,20 +13,36 @@ const fbImage = 'https://graph.facebook.com/259389830744794/picture?height=500'
 class App extends Component {
   constructor() {
     super()
+
     this.pan = new Animated.ValueXY({ x: 1, y: 1 })
+
     this.cardPanResponder = PanResponder.create({
       onStartShouldSetPanResponder: () => true,
       onPanResponderMove: Animated.event([
         null,
         { dx: this.pan.x, dy: this.pan.y },
       ]),
-      onPanResponderRelease: (e, gesture) => console.log(gesture.moveY),
+
+      onPanResponderRelease: (e, gesture) => {
+        Animated.spring(this.pan, {
+          toValue: { x: 0, y: 0 },
+          friction: 4.5,
+        }).start()
+      },
     })
   }
 
   render() {
+    const rotateCard = this.pan.x.interpolate({
+      inputRange: [-200, 0, 200],
+      outputRange: ['10deg', '0deg', '-10deg'],
+    })
     const animatedStyle = {
-      transform: [{ translateX: this.pan.x }, { translateY: this.pan.y }],
+      transform: [
+        { translateX: this.pan.x },
+        { translateY: this.pan.y },
+        { rotate: rotateCard },
+      ],
     }
     return (
       <Animated.View
