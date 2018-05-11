@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 
-import { View, Text, TouchableHighlight, StyleSheet } from 'react-native'
+import { View, Text, TouchableHighlight } from 'react-native'
 import { FontAwesome } from '@expo/vector-icons'
+
+import styles from './styles'
 
 export default class FacebookButton extends Component {
   render() {
@@ -15,25 +17,3 @@ export default class FacebookButton extends Component {
     )
   }
 }
-
-const styles = StyleSheet.create({
-  button: {
-    height: 44,
-    width: 220,
-    backgroundColor: 'rgb(59,89,152)',
-    borderRadius: 50,
-  },
-
-  buttonContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
-  buttonText: {
-    fontSize: 14,
-    color: 'rgb(255,255,255)',
-    marginLeft: 15,
-  },
-})

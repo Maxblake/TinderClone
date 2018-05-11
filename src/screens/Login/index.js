@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { View, StyleSheet } from 'react-native'
 
-import FacebookButton from '../components/facebookButton'
+import FacebookButton from '../../components/FacebookButton'
+import styles from './styles'
 
 export default class Login extends Component {
   render() {
@@ -14,11 +15,3 @@ export default class Login extends Component {
     )
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-})

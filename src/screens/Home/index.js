@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import Card from '../components/card'
+import Card from '../../components/Card'
 import { View } from 'react-native'
 import * as firebase from 'firebase'
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import Home from './screens/home'
-import Login from './screens/login'
+import Home from './screens/Home'
+import Login from './screens/Login'
 
 import * as firebase from 'firebase'
 
