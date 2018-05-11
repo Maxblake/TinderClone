@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Home from './screens/home'
+import Login from './screens/login'
 
 import * as firebase from 'firebase'
 
@@ -12,6 +13,6 @@ firebase.initializeApp(firebaseConfig)
 
 export default class App extends Component {
   render() {
-    return <Home />
+    return <Login />
   }
 }
