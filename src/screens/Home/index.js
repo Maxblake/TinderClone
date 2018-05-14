@@ -11,6 +11,7 @@ export default class Home extends Component {
   }
 
   componentWillMount() {
+    this._getUserLocation()
     firebase
       .database()
       .ref()
@@ -24,6 +25,19 @@ export default class Home extends Component {
         })
         this.setState({ profiles })
       })
+  }
+
+  _getUserLocation = async () => {
+    const { Permissions, Location } = Expo
+    const { status } = await Permissions.askAsync(Permissions.LOCATION)
+    if (status === 'granted') {
+      const location = await Location.getCurrentPositionAsync({
+        enableHighAccuracy: false,
+      })
+      console.log('Permission Granted', location)
+    } else {
+      console.log('denied')
+    }
   }
 
   nextCard = () => {

@@ -12,7 +12,7 @@ import {
 import moment from 'moment'
 import styles from './styles'
 
-class Card extends Component {
+export default class Card extends Component {
   componentWillMount() {
     this.pan = new Animated.ValueXY({ x: 1, y: 1 })
 
