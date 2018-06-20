@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 
 import Card from '../../components/Card'
 import { View } from 'react-native'
+import SimpleScroller from '../../components/SimpleScroller'
 import * as firebase from 'firebase'
 import GeoFire from 'geofire'
 
@@ -17,18 +18,17 @@ export default class Home extends Component {
       .database()
       .ref()
       .child('users')
-      .once('value', snap => {
+      .once('value', (snap) => {
         let profiles = []
-        snap.forEach(profile => {
-          const { name, bio, birthday, id } = profile.val()
-          console.log(bio)
-          profiles.push({ name, bio, birthday, id })
+        snap.forEach((profile) => {
+          const { first_name, birthday, id } = profile.val()
+          profiles.push({ first_name, birthday, id })
         })
         this.setState({ profiles })
       })
   }
 
-  _getUserLocation = async uid => {
+  _getUserLocation = async (uid) => {
     const { Permissions, Location } = Expo
     const { status } = await Permissions.askAsync(Permissions.LOCATION)
 
@@ -37,7 +37,9 @@ export default class Home extends Component {
         enableHighAccuracy: false,
       })
 
-      const { longitude, latitude } = location.coords
+      //const { longitude, latitude } = location.coords
+      const latitude = 37.39239 //demo lat
+      const longitude = -122.09072 //demo lon
       const geoFireRef = new GeoFire(firebase.database().ref('geoData'))
       geoFireRef.set(uid, [latitude, longitude])
     } else {
@@ -61,6 +63,13 @@ export default class Home extends Component {
       })
   }
   render() {
-    return <View style={{ flex: 1 }}>{this._renderCards()}</View>
+    return (
+      <SimpleScroller
+        screens={[
+          this._renderCards(),
+          <View style={{ flex: 1, backgroundColor: 'red' }} />,
+        ]}
+      />
+    )
   }
 }
