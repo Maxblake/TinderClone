@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, ActivityIndicator } from 'react-native'
 import firebase from 'firebase'
 import { StackActions, NavigationActions } from 'react-navigation'
 
@@ -7,7 +7,12 @@ import FacebookButton from '../../components/FacebookButton'
 import styles from './styles'
 
 export default class Login extends Component {
+  state = {
+    showSpinner: true,
+  }
+
   componentDidMount() {
+    // firebase.auth().signOut()
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         const resetAction = StackActions.reset({
@@ -20,6 +25,8 @@ export default class Login extends Component {
           ],
         })
         this.props.navigation.dispatch(resetAction)
+      } else {
+        this.setState({ showSpinner: false })
       }
     })
   }
@@ -62,9 +69,14 @@ export default class Login extends Component {
     }
   }
   render() {
+    const { showSpinner } = this.state
     return (
       <View style={styles.container}>
-        <FacebookButton onPress={this._login} />
+        {showSpinner ? (
+          <ActivityIndicator animating={showSpinner} />
+        ) : (
+          <FacebookButton onPress={this._login} />
+        )}
       </View>
     )
   }
