@@ -5,15 +5,17 @@ import { View } from 'react-native'
 import SimpleScroller from '../../components/SimpleScroller'
 import * as firebase from 'firebase'
 import GeoFire from 'geofire'
+import Profile from '../Profile'
 
 export default class Home extends Component {
   state = {
     profileIndex: 0,
     profiles: [],
+    currentUser: this.props.navigation.state.params.user,
   }
 
   componentWillMount() {
-    this._getUserLocation(this.props.navigation.state.params.uid)
+    this._getUserLocation(this.props.navigation.state.params.user.uid)
     firebase
       .database()
       .ref()
@@ -63,12 +65,10 @@ export default class Home extends Component {
       })
   }
   render() {
+    const { currentUser } = this.state
     return (
       <SimpleScroller
-        screens={[
-          this._renderCards(),
-          <View style={{ flex: 1, backgroundColor: 'red' }} />,
-        ]}
+        screens={[<Profile user={currentUser} />, this._renderCards()]}
       />
     )
   }

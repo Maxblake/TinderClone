@@ -12,23 +12,34 @@ export default class Login extends Component {
   }
 
   componentDidMount() {
-    // firebase.auth().signOut()
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        const resetAction = StackActions.reset({
-          index: 0,
-          actions: [
-            NavigationActions.navigate({
-              routeName: 'Home',
-              params: { uid: user.uid },
-            }),
-          ],
+    //firebase.auth().signOut()
+    firebase.auth().onAuthStateChanged((auth) => {
+      if (auth) {
+        this.firebaseRef = firebase.database().ref('users')
+        this.firebaseRef.child(auth.uid).on('value', (snap) => {
+          const user = snap.val()
+          if (user != null) {
+            this.firebaseRef.child(user.uid).off('value')
+            this._goTo('Home', user)
+          }
         })
-        this.props.navigation.dispatch(resetAction)
       } else {
         this.setState({ showSpinner: false })
       }
     })
+  }
+
+  _goTo(screen, user) {
+    const resetAction = StackActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({
+          routeName: screen,
+          params: { user },
+        }),
+      ],
+    })
+    this.props.navigation.dispatch(resetAction)
   }
 
   _authanticate = (token) => {
@@ -44,7 +55,7 @@ export default class Login extends Component {
       .database()
       .ref('users')
       .child(uid)
-      .update(userData)
+      .update({ ...userData, uid })
   }
 
   _login = async () => {
